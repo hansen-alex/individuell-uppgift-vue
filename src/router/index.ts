@@ -8,7 +8,7 @@ const routes = [
     { path: "/", component: Home },
     { path: "/favorites", component: Favorites },
     { path: "/:id", component: Recipie },
-    { path: "/:patchMatch(.*)", component: NotFound },
+    { path: "/:patchMatch(.*)", name: "404", component: NotFound },
 ];
 
 const router = createRouter({
