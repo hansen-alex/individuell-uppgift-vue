@@ -18,7 +18,6 @@ const fetchRecipie = async () => {
         if(!result) throw "404";
 
         data.value = result[0];
-        console.log("yo", data.value);
     } catch (e) {
         router.push({ path: "error/404" }); //TODO: this is surely scuffed, but im tired...
     } finally {
@@ -82,7 +81,7 @@ onMounted(fetchRecipie);
 <style scoped>
 article {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-evenly;
 }
 
@@ -90,7 +89,6 @@ article div {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 40%;
     gap: 1rem;
 }
 
@@ -112,5 +110,15 @@ ul {
     flex-direction: column;
     gap: 0.5rem;
     list-style-type: square;
+}
+
+@media (min-width: 768px) {
+    article {
+        flex-direction: row;
+    }
+
+    article div {
+        width: 40%;
+    }
 }
 </style>
