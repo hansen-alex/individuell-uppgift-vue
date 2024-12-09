@@ -4,23 +4,19 @@ import { ref, onMounted } from 'vue';
 import RecipiePreview from '../components/RecipiePreview.vue';
 
 const loading = ref(false);
-const data = ref<any>(null);
+const featuredData = ref<any[]>([]);
 
 const searchTerm = ref<string>("");
-const searchData = ref<any>(null);
+const searchData = ref<any[]>([]);
 
-const fetchRecipie = async () => {
+const featuredRecipies = async () => {
     loading.value = true;
 
     try {
-        const result = (await axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?s=ha`)).data.meals || [];
-        console.log("shibidi", result);
-
-        //TODO: fetch 3? random recipies to feature on load
-
-        data.value = result;
-        console.log(data.value);
-        
+        for (let i = 0; i < 3; i++) {
+            const result = (await axios.get(`https://www.themealdb.com/api/json/v1/1/random.php`)).data.meals || [];
+            featuredData.value.push(result[0]);
+        }
     } catch (e) {
         console.error(e);
     } finally {
@@ -29,25 +25,33 @@ const fetchRecipie = async () => {
 };
 
 const searchRecipies = async () => {
-    console.log(searchTerm.value);
     try {
         const result = (await axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?s=${searchTerm.value}`)).data.meals || [];
         searchData.value = result;
-        console.log(searchData.value);
     } catch (e) {
         console.error(e);
     } 
 };
 
-// onMounted(fetchRecipie);
+onMounted(featuredRecipies);
 </script>
 
 <template>
     <section>
         <h2>Featured</h2>
-        <ul>
-
-        </ul>
+        <template v-if="loading">
+            {{ "Loading featured recipies..." }}
+        </template>
+        <template v-else-if="featuredData">
+            <ul>
+                <RecipiePreview v-for="meal in featuredData"
+                    :key="meal.idMeal"
+                    :meal-id="meal.idMeal"
+                    :meal-name="meal.strMeal"
+                    :meal-image-u-r-l="meal.strMealThumb"
+                />
+            </ul>
+        </template>
     </section>
     <section>
         <label for="search-field"><h2>Search</h2></label>

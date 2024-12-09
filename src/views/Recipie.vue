@@ -14,7 +14,6 @@ const fetchRecipie = async () => {
 
     try {
         const result = (await axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${route.params.id}`)).data.meals;
-        //Test id: 53082 https://www.themealdb.com/meal/53082-Strawberries-Romanoff-Recipe
         if(!result) throw "404";
 
         data.value = result[0];
@@ -36,7 +35,7 @@ onMounted(fetchRecipie);
     <template v-if="loading">
         {{ "Loading recipie..." }}
     </template>
-    <template v-else>
+    <template v-else-if="data">
         <article>
             <div>
                 <span>
