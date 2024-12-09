@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import axios from 'axios';
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useFavoritesStore } from '../stores/favorites';
 
 const route = useRoute();
 const router = useRouter();
 
 const loading = ref(false);
 const data = ref<any>(null);
+
+const favoritesStore = useFavoritesStore();
+const { push, pull } = favoritesStore;
+const isFavorite = computed(() => {
+    return favoritesStore.favorites.filter(favorite => favorite.id == data.value.idMeal).length > 0;
+});
 
 const fetchRecipie = async () => {
     loading.value = true;
@@ -24,8 +31,8 @@ const fetchRecipie = async () => {
     }
 };
 
-const addToFavorites = () => {
-    // data.value.idMeal
+const ToggleFavorite = () => {
+    isFavorite.value ? pull(data.value.idMeal) : push(data.value.idMeal, data.value.strMeal, data.value.strMealThumb);
 };
 
 onMounted(fetchRecipie);
@@ -45,7 +52,7 @@ onMounted(fetchRecipie);
                 <img :src="data?.strMealThumb" :alt="data?.strMeal">
                 <span>
                     <a :href="data?.strSource" target="_blank" rel="noopener noreferrer"><button type="button">Recipie source</button></a>
-                    <button @click="addToFavorites" type="button">Add to favorites</button>
+                    <button @click="ToggleFavorite" type="button">{{ isFavorite ? "Remove from favorites" : "Add to favorites" }}</button>
                 </span>
             </div>
             <div>

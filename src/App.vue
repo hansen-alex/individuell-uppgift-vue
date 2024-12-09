@@ -7,7 +7,7 @@ Textinterpolering {{ exempel }} [X]
 Villkorlig rendering (v-if) [X]
 Listrendering (v-for) [X]
 Händelser (v-on eller dess kortform) [X]
-Använda computed [ ]
+Använda computed [X]
 v-model [X]
 minst två webbsidor med Vue Router [X]
 minst en prop ska skickas ned till komponent  [X]
@@ -26,7 +26,7 @@ Använd provide / inject från root component till valfri child component med de
 -Functionality:
 Det ska gå att hämta recept från ett api [X]
 Visa dem på sidan [X]
-Kunna lägga till recept i favoriter [ ]
+Kunna lägga till recept i favoriter [X]
 Samt uppfylla kriterier nedan [ ]
 */
 import { RouterView, RouterLink } from 'vue-router';
